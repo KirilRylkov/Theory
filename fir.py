@@ -4,7 +4,6 @@ import random
 from collections import Counter
 import matplotlib.pyplot
 
-
 # Y = x^3
 # математическое ожидание x = 2
 # среднеквадратическое отклонение x = 3^(1/2)
@@ -31,13 +30,15 @@ def getVariationSeries(Y):
     return sorted(Y)
 
 def func(x):
-    res = x ** (1 / 3)
-    return res
+    if x < 0:
+        return 0
+    else:
+       return  x ** (1/3)
 
 
 if __name__ == '__main__':
     # количество чисел
-    N = 50
+    N = 100
     # получаем интервал
     a, b = getInterval(2, 3 ** (1 / 2))
     # получаем список случайных величи равномерно распределённых на интервале a, b
@@ -55,6 +56,7 @@ if __name__ == '__main__':
     # словарь для хранения случайных величин ключ велиина значение вероятность
     second = {}
     for key in first:
+        # значение функции распредделения в токе key
         # количество случайной величины  одним значением  делем на общее количество случайных величин
         probability = round(probability + first[key] / len(Y), 4)
         second[key] = probability
@@ -74,19 +76,18 @@ if __name__ == '__main__':
     y.append(1)
     # строим график эмпирической функции
     e, = matplotlib.pyplot.plot(x, y)
-    #matplotlib.pyplot.plot([-10, -1, 125, 135], [0, 0, 1, 1], 'red')
 
     # теоритическая функция
     x = [-10]
     y = [0]
     i = 0
-    while i != 125:
+    for i in Y:
         x.append(i)
         y.append((func(i) / 5))
-        i += 1
     x.append(135)
     y.append(1)
     # строим график теоритической функции
     t, = matplotlib.pyplot.plot(x, y, 'red')
-    matplotlib.pyplot.legend([e, t], ['эмпирическая функция','теоритическая функция'])
+    matplotlib.pyplot.legend([e, t], ['эмпирическая функция', 'теоритическая функция'])
+    matplotlib.pyplot.xlim(-10, 135)
     matplotlib.pyplot.show()
